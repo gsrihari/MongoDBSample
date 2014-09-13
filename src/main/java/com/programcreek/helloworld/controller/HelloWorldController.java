@@ -3,6 +3,11 @@ package com.programcreek.helloworld.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,5 +71,35 @@ public class HelloWorldController {
 		}
 		return user;
 	}
+	
+	/*@RequestMapping("/saveUser")
+	public @ResponseBody Users saveUser(@RequestParam(value="id")String id,
+		@RequestParam(value="firstname")String firstname,@RequestParam(value="lastname")String lastname) {
+		
+		Users user=new Users();
+		
+		user.setId(getNextSequence("users"));
+		user.setFirstname(firstname);
+		user.setLastname(lastname);
+		repository.save(user);
+		
+		return user;
+	}*/
+	
+	/*public String getNextSequence(String collectionName) {
+		 
+		Query query = new Query(Criteria.where("_id").is(collectionName));
+		 
+        Update update = new Update();
+        update.inc("seq", 1);
+ 
+        FindAndModifyOptions options = new FindAndModifyOptions();
+        options.returnNew(true);
+ 
+        Users seqId = 
+            repository.findAndModify(query, update, options, Users.class);
+        System.out.println("seq id = "+seqId.getId()+" / "+seqId.getSeqID());
+        return seqId.getId();
+	  }*/
 
 }

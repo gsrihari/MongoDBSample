@@ -21,6 +21,9 @@ public class Users {
 	 @Transient
 	 private String message;
 	 
+	 @Transient
+	 private int seqID;
+	 
 	 public Users() {}
 	 
 	 public Users(String firstName, String lastName) {
@@ -59,10 +62,15 @@ public class Users {
 		return message;
 	}
 	
-	@XmlElement
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
+
+	public int getSeqID() {
+		return seqID;
+	}
+
+	public void setSeqID(int seqID) {
+		this.seqID = seqID;
+	}	
 }
