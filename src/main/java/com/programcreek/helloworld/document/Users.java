@@ -21,7 +21,7 @@ public class Users {
 	 @Transient
 	 private String message;
 	 
-	 @Transient
+	 //@Transient
 	 private int seqID;
 	 
 	 public Users() {}

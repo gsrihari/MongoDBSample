@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -20,11 +21,14 @@ import com.programcreek.helloworld.document.Users;
 import com.programcreek.helloworld.repositories.UsersRepository;
 
 @Controller
-@RequestMapping("/hello")
+@RequestMapping("/home")
 public class HelloWorldController {
 	
 	@Autowired
 	private UsersRepository repository;
+	
+	@Autowired 
+	private MongoOperations mongo;
 
 	String message = "Welcome to Spring MVC!";
 	
@@ -72,34 +76,43 @@ public class HelloWorldController {
 		return user;
 	}
 	
-	/*@RequestMapping("/saveUser")
+	@RequestMapping("/saveUser")
 	public @ResponseBody Users saveUser(@RequestParam(value="id")String id,
 		@RequestParam(value="firstname")String firstname,@RequestParam(value="lastname")String lastname) {
 		
 		Users user=new Users();
 		
-		user.setId(getNextSequence("users"));
+		user.setId(getNextSequence("users")+"");
 		user.setFirstname(firstname);
 		user.setLastname(lastname);
 		repository.save(user);
 		
 		return user;
-	}*/
+	}
 	
-	/*public String getNextSequence(String collectionName) {
-		 
+	private String getNextSequence(String collectionName) {
+		
+		//http://gerrydevstory.com/2013/05/16/auto-incrementing-field-on-spring-data-mongodb/
+		System.out.println("in getNextSequence "+ collectionName);
 		Query query = new Query(Criteria.where("_id").is(collectionName));
-		 
+		System.out.println("1");
         Update update = new Update();
-        update.inc("seq", 1);
- 
+        update.inc("seqID", 1);
+        
+        System.out.println("2");
         FindAndModifyOptions options = new FindAndModifyOptions();
         options.returnNew(true);
- 
-        Users seqId = 
-            repository.findAndModify(query, update, options, Users.class);
-        System.out.println("seq id = "+seqId.getId()+" / "+seqId.getSeqID());
+        
+        System.out.println("3");
+        Users seqId = mongo.findAndModify(query, update, options, Users.class);
+        System.out.println("seq id = ");
         return seqId.getId();
-	  }*/
+	  }
+	
+	/*public int getNextSequence1(String collectionName) {
+		
+		Users user = mongo.findAndModify(query(where("_id").is(collectionName)), new Update().inc("seq", 1),options().returnNew(true), Users.class);
+		return user.getSeqID();
+	}*/
 
 }
